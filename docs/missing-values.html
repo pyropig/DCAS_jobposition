@@ -24,7 +24,7 @@
 <meta name="author" content="Shuqing Shan, Weiwei Jiang" />
 
 
-<meta name="date" content="2021-11-18" />
+<meta name="date" content="2021-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -76,7 +76,15 @@
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#graphing"><i class="fa fa-check"></i><b>4.1</b> Graphing</a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#analysis"><i class="fa fa-check"></i><b>4.2</b> Analysis</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="missing-values.html"><a href="missing-values.html#columns-with-major-missing-50"><i class="fa fa-check"></i><b>4.2.1</b> Columns with major missing (&gt;50%)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#frequent-pattern-of-missing-data"><i class="fa fa-check"></i><b>4.2.2</b> Frequent pattern of missing data</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -101,7 +109,30 @@
             <section class="normal" id="section-">
 <div id="missing-values" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Missing values</h1>
+<div id="graphing" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Graphing</h2>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="analysis" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Analysis</h2>
+<div id="columns-with-major-missing-50" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Columns with major missing (&gt;50%)</h3>
+<p>Following the graph, it is obvious that there are four column with more than 50% of data missing. The first one, Recruitment Contact, is completely filled with NAs. This column supposed to store contact information of recruitment, it might be erased for privacy, or it might be the data collector found they can’t collect this data after they created the data frame. Whichever it was, with full NA in the collumn, this one should be discarded for future analysis.</p>
+<p>Second most missing data is the Hour and Shift column. This column is supposed to store weekly working hours or shifts, but its not possible every job has this info when posting for hiring. Thus this is not surprising discovery.</p>
+<p>The third in list is the column Post Until. This column is specially commented that a missing value here means the job is posted until fully filled. It is in fact a time stamp here means the job offer is being withdrawn without hiring enough people. This is showing around 63% of job position are fully filled over the span.</p>
+<p>The fourth is Work location 1. This column, different from Work location which stores Agency location, stores specific work location of the employees. It is obvious that agency location is always fixed and thus fully given in data, and working location of employee is varying thus not frequently recorded. It might because of the job doesn’t have a fixed place to work at, or the working place is TBA. Either way, it makes this column missing over 50% of the values.</p>
+<p>It is worth noting that although not over 50%, the fifth in list also has quite large portion of data missing compared to other columns. It is the column Additional Information. Maybe there isn’t much info to post after all.</p>
+</div>
+<div id="frequent-pattern-of-missing-data" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Frequent pattern of missing data</h3>
+<p>The most frequent pattern consist of the four major missing columns, taking up over 13% of the total patterns. When adding the fifth most missing column, the second frequent pattern comes and take around 12% of the total patterns. These two are the most dominating pattern.</p>
+<p>The following patterns are a combination of the four major missing columns. An interesting pattern here is Post Until is being a column that frequently missing only by itself (disregarding the column fully missing). With the fact that this missing value is actually meaningful, it shows that there’s a lot of good data for analysis in the data set.</p>
+<p>The next three patterns are missing some of the informations, but they do have the column Post Until. Maybe its because the missing of those info caused people unwilling to apply for these jobs?</p>
+<p>Other pattern with the missing of elements outside the major four is minor in percentage and could possibly be ignored and removed for analysis.</p>
+<p>Overall, this data set is pretty good on completeness.</p>
 
+</div>
+</div>
 </div>
             </section>
 

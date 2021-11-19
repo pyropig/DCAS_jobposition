@@ -1,1 +1,36 @@
 # Missing values
+
+## Graphing
+
+```{r fig.align="center", echo = FALSE,fig.height = 12, fig.width = 12}
+source("plot_missing.R")
+# read in data, change empty cell into NA
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+plot_missing(jobs,percent = TRUE)
+```
+
+## Analysis
+
+### Columns with major missing (>50%)
+
+Following the graph, it is obvious that there are four column with more than 50% of data missing. The first one, Recruitment Contact, is completely filled with NAs. This column supposed to store contact information of recruitment, it might be erased for privacy, or it might be the data collector found they can't collect this data after they created the data frame. Whichever it was, with full NA in the collumn, this one should be discarded for future analysis.
+
+Second most missing data is the Hour and Shift column. This column is supposed to store weekly working hours or shifts, but its not possible every job has this info when posting for hiring. Thus this is not surprising discovery. 
+
+The third in list is the column Post Until. This column is specially commented that a missing value here means the job is posted until fully filled. It is in fact a time stamp here means the job offer is being withdrawn without hiring enough people. This is showing around 63% of job position are fully filled over the span.
+
+The fourth is Work location 1. This column, different from Work location which stores Agency location, stores specific work location of the employees. It is obvious that agency location is always fixed and thus fully given in data, and working location of employee is varying thus not frequently recorded. It might because of the job doesn't have a fixed place to work at, or the working place is TBA. Either way, it makes this column missing over 50% of the values.
+
+It is worth noting that although not over 50%, the fifth in list also has quite large portion of data missing compared to other columns. It is the column Additional Information. Maybe there isn't much info to post after all.
+
+### Frequent pattern of missing data
+
+The most frequent pattern consist of the four major missing columns, taking up over 13% of the total patterns. When adding the fifth most missing column, the second frequent pattern comes and take around 12% of the total patterns. These two are the most dominating pattern.
+
+The following patterns are a combination of the four major missing columns. An interesting pattern here is Post Until is being a column that frequently missing only by itself (disregarding the column fully missing). With the fact that this missing value is actually meaningful, it shows that there's a lot of good data for analysis in the data set.
+
+The next three patterns are missing some of the informations, but they do have the column Post Until. Maybe its because the missing of those info caused people unwilling to apply for these jobs?
+
+Other pattern with the missing of elements outside the major four is minor in percentage and could possibly be ignored and removed for analysis.
+
+Overall, this data set is pretty good on completeness.

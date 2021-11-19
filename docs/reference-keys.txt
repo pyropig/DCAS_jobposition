@@ -2,6 +2,10 @@ introduction
 data-sources
 data-transformation
 missing-values
+graphing
+analysis
+columns-with-major-missing-50
+frequent-pattern-of-missing-data
 results
 interactive-component
 conclusion
