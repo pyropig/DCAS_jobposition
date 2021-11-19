@@ -1,6 +1,6 @@
 library(tidyverse)
 library(patchwork)
-plot_missing <- function(x, percent = TRUE ) {
+plot_missing <- function(x, percent = TRUE, abbre_length = 8, rotate  = 0) {
   missing_patterns <- data.frame(is.na(x)) %>%
     group_by_all() %>%
     count(name = "count", sort = TRUE) %>%
@@ -60,7 +60,8 @@ plot_missing <- function(x, percent = TRUE ) {
       geom_tile(color = "white", lwd = 0.2) + 
       scale_fill_manual(values = c("own" ="lightgrey","miss" = "#B6A0E4","complete" = "grey")) + 
       theme_classic() + 
-      scale_x_discrete(label = function(x) stringr::str_trunc(x, 7)) +
+      scale_x_discrete(label =  function(x) abbreviate(x, abbre_length)) +
+      guides(x = guide_axis(angle = rotate)) +
       theme(legend.position = "none") + 
       annotate("text",label = "complete cases", x= ncol(missing_part)/2.0+0.5,y = nrow(missing_part) - complete_num + 1) + 
       ylab("missing pattern") + 
@@ -70,7 +71,8 @@ plot_missing <- function(x, percent = TRUE ) {
       geom_tile(color = "white", lwd = 0.2) + 
       scale_fill_manual(values = c("own" ="lightgrey","miss" = "#B6A0E4","complete" = "grey")) + 
       theme_classic() + 
-      scale_x_discrete(label = function(x) stringr::str_trunc(x, 7)) +
+      scale_x_discrete(label =  function(x) abbreviate(x, abbre_length)) +
+      guides(x = guide_axis(angle = rotate)) +
       theme(legend.position = "none") + 
       ylab("missing pattern") + 
       xlab("variable")
@@ -83,7 +85,8 @@ plot_missing <- function(x, percent = TRUE ) {
                        breaks = seq(0, r_col_max, by = r_col_by),
                        expand = c(0,0)) +
     theme_bw() +
-    scale_x_discrete(label = function(x) stringr::str_trunc(x, 7)) +
+    scale_x_discrete(label =  function(x) abbreviate(x, abbre_length)) +
+    guides(x = guide_axis(angle = rotate)) +
     theme(panel.grid.major.x = element_blank() ,
           panel.grid.major.y = element_line( size=.1, color="grey" )) + 
     ylab(r_col_lab)+ 
@@ -103,6 +106,7 @@ plot_missing <- function(x, percent = TRUE ) {
           panel.grid.major.x= element_line( size=.1, color="grey" ),
           legend.position = "none") + 
     scale_alpha_manual(values = c(0.5,0.8))+
+    guides(x = guide_axis(angle = rotate)) +
     xlab("")+ 
     ylab(pattern_stat_lab) 
   p2 +  plot_spacer() + p1 + p3 + plot_layout(ncol = 2,widths = c(4, 1), heights = c(1,4))
