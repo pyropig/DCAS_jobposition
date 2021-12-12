@@ -1,1 +1,54 @@
 # Results
+
+```{r}
+library(stringr)
+regexp <- "[[:digit:]]+"
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+jobs$Title.Classification <- jobs$Title.Classification %>% str_extract(regexp)
+jobs$Title.Classification <- jobs$Title.Classification %>% factor()
+
+jobs <- jobs[!(jobs$Level == 'MY' | jobs$Level == 'M5' | jobs$Level == 'M6' | jobs$Level == 'M7'),]
+
+jobs$Level <- jobs$Level %>% str_extract(regexp)
+jobs$Level <- jobs$Level %>% factor()
+
+```
+
+
+## Job level and classification
+
+In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.
+
+```{r fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+library(ggplot2)
+library(ggmosaic)
+library(dplyr)
+library(tidyr)
+library(vcd)
+# jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+# https://cran.r-project.org/web/packages/ggmosaic/vignettes/ggmosaic.html
+# mosaic(Title.Classification~Level, data=jobs, direction=c('v', 'h'))
+ggplot(data=jobs) + 
+  geom_mosaic(aes(x=product(Title.Classification, Level), fill = Title.Classification), alpha = 0.6) +
+  labs(y="Title.Classification", x="Level", title ="Jobs Level verses Classification" )
+```
+
+Viewing data on level difference, we can see that among all level of jobs, labor and exempt title is quite small in amount. This could be related to the fact this data is collected by government agency focusing on goverment hiring, which indeed need less pure-labor worker than office workers.
+
+### Lower level job titles
+
+On level 0 which represent part-time jobs, the competitive jobs and non-competitive jobs are almost even, this could be the fact that part-time worker is needed among all positions, creating a balanced distribution. On level 1 representing interns, the competitive jobs remains the same portion while unclassified jobs increase dramatically. This could be the nature of interns which newcomers are not fulling integrated in the agency's system, thus creating lots of unclassified jobs. 
+
+### higher level job titles
+
+On level 2-4 the competitive portion is significantly higher than lower level jobs. This indicate a competition intensive job environment in government agency, no matter mid to low lever full-time workers or higher level managment workser, they all have high competitive job percentage. Level 4 however do have a slightly lower competitve level compared to level 2 and 3, marking the highest managing works are less competitive. This could because of that level 4 jobs are rare and not much people are qualified and applied to those jobs.
+
+
+```{r fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+#mosaic(Level~Title.Classification, data=jobs, direction=c('v', 'h'))
+ggplot(data=jobs) + 
+  geom_mosaic(aes(x=product(Level, Title.Classification), fill = Level), alpha = 0.6) +
+  labs(x="Title.Classification", y="Level", title ="Jobs Classification verses Level" )
+```
+
+Viewing from another perspective, we can see competitive positions - 5 are packed in level 0 jobs while non-competitive positions are evenly distributed among different levels except level 4. Unclassified titles are mostly in level 1 which is interns. This is mostly consistent with previous findings.
