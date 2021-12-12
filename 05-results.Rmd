@@ -76,6 +76,24 @@ ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+### Which career leavel is mostly need in each Category
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+new_job_cate$Career_level <- jobs[which(!is.na(jobs$Career.Level)),]$Career.Level
+career_plot <- new_job_cate %>% group_by(category,Career_level) %>% summarise(val = sum(x_position)) %>% ungroup(Career_level)
+career_plot$Career_level <- fct_relevel(career_plot$Career_level,'Student','Entry-Level','Experienced (non-manager)','Manager','Executive')
+cate_level <- demand_cate[order(-demand_cate$x),]$Category
+career_plot$category <- fct_relevel(career_plot$category,cate_level)
+ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
+    geom_bar(stat = "identity",color = "black",position='stack') + 
+    scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
+    guides(x = guide_axis(angle = 90)) +
+    scale_y_continuous(expand = c(0,10)) +
+    theme_light() +
+    scale_fill_manual(values = c("#AC92EB","#4FC1E8","#A0D568","#FFCE54","#ED5564")) + 
+    xlab("Category") +
+    ylab("Job Openings")
+```
 ## Job level and classification
 
 In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.
