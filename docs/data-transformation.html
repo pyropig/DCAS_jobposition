@@ -24,7 +24,7 @@
 <meta name="author" content="Shuqing Shan, Weiwei Jiang" />
 
 
-<meta name="date" content="2021-12-11" />
+<meta name="date" content="2021-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -94,7 +94,14 @@
 <li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#frequent-pattern-of-missing-data"><i class="fa fa-check"></i><b>4.2.2</b> Frequent pattern of missing data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#job-level-and-classification"><i class="fa fa-check"></i><b>5.1</b> Job level and classification</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.1.1</b> Lower level job titles</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.1.2</b> higher level job titles</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -118,6 +125,7 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
+<p>The data in column Title.Classification and Level are categorical, thus need to be changed from initial readings which is characters. The classification is transformed in a following basis: Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The level have 0-4 integer leveling, however M1 ~ M4 exist representing minor 1 ~ minor 4. The record with these minor level is few in number thus converted to corresponding higher levels for analysis. There are also special cases which occur less than ten times, these cases are dropped.</p>
 
 </div>
             </section>

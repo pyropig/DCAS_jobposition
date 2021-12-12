@@ -12,5 +12,8 @@ analysis
 columns-with-major-missing-50
 frequent-pattern-of-missing-data
 results
+job-level-and-classification
+lower-level-job-titles
+higher-level-job-titles
 interactive-component
 conclusion

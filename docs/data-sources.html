@@ -24,7 +24,7 @@
 <meta name="author" content="Shuqing Shan, Weiwei Jiang" />
 
 
-<meta name="date" content="2021-12-11" />
+<meta name="date" content="2021-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -94,7 +94,14 @@
 <li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#frequent-pattern-of-missing-data"><i class="fa fa-check"></i><b>4.2.2</b> Frequent pattern of missing data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#job-level-and-classification"><i class="fa fa-check"></i><b>5.1</b> Job level and classification</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.1.1</b> Lower level job titles</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.1.2</b> higher level job titles</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -130,7 +137,7 @@
 </div>
 <div id="columns-information" class="section level3" number="2.2.2">
 <h3><span class="header-section-number">2.2.2</span> Columns information</h3>
-<p>Looking at the columns, there are self-explanatory ones but there’s also columns with vague name. Here we introduce some columns need explainations. The first important column is the job id column correspond to the number representing the job post in the agency’s system. However, this id is not unique since one job posting could have two types, external and internal, recorded in column ‘posting type’. Next is the Title Classification, This is a title jurisdiction classification, each job falls in one of the following seven categories: Competitive, Cultural, Exempt, Labor, Non-Competitive, Pending Classification and Unclassified Service. The job title also has a level assignment correspond to the work duties assigned to that position, this info is recorded in ‘Level’ column.</p>
+<p>Looking at the columns, there are self-explanatory ones but there’s also columns with vague name. Here we introduce some columns need explanations. The first important column is the job id column correspond to the number representing the job post in the agency’s system. However, this id is not unique since one job posting could have two types, external and internal, recorded in column ‘posting type’. Next is the Title Classification, This is a title jurisdiction classification, each job falls in one of the following five categories represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The job title also has a level assignment correspond to the work duties assigned to that position, this info is recorded in ‘Level’ column. With 0-1 level means interns and part-time workers, 2 meaning normal full-time worker, and 3-4 meaning lower to higher management worker.</p>
 <p>There’s two column with very similar name, Work Location and Work Location 1. This is not a duplication however, Work Location column records the location of agency posting the job, and Work Location 1 records the actual working place where employee goes every day.</p>
 <p>The last three column are all with dates, while date format is in MM/DD/YY. There’s one column here need special care: ‘Post Until’ column records the last data that, a job vacancy was be posted. There needs to be a vacancy inorder to be posted, thus a NA value here indicate the job is fully filled. Only when a job posting being withdrawn without filled will it leave record in this column.</p>
 </div>

@@ -24,7 +24,7 @@
 <meta name="author" content="Shuqing Shan, Weiwei Jiang" />
 
 
-<meta name="date" content="2021-12-11" />
+<meta name="date" content="2021-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -94,7 +94,14 @@
 <li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#frequent-pattern-of-missing-data"><i class="fa fa-check"></i><b>4.2.2</b> Frequent pattern of missing data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#job-level-and-classification"><i class="fa fa-check"></i><b>5.1</b> Job level and classification</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.1.1</b> Lower level job titles</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.1.2</b> higher level job titles</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -118,7 +125,23 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Results</h1>
+<div id="job-level-and-classification" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Job level and classification</h2>
+<p>In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Viewing data on level difference, we can see that among all level of jobs, labor and exempt title is quite small in amount. This could be related to the fact this data is collected by government agency focusing on goverment hiring, which indeed need less pure-labor worker than office workers.</p>
+<div id="lower-level-job-titles" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Lower level job titles</h3>
+<p>On level 0 which represent part-time jobs, the competitive jobs and non-competitive jobs are almost even, this could be the fact that part-time worker is needed among all positions, creating a balanced distribution. On level 1 representing interns, the competitive jobs remains the same portion while unclassified jobs increase dramatically. This could be the nature of interns which newcomers are not fulling integrated in the agency’s system, thus creating lots of unclassified jobs.</p>
+</div>
+<div id="higher-level-job-titles" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> higher level job titles</h3>
+<p>On level 2-4 the competitive portion is significantly higher than lower level jobs. This indicate a competition intensive job environment in government agency, no matter mid to low lever full-time workers or higher level managment workser, they all have high competitive job percentage. Level 4 however do have a slightly lower competitve level compared to level 2 and 3, marking the highest managing works are less competitive. This could because of that level 4 jobs are rare and not much people are qualified and applied to those jobs.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Viewing from another perspective, we can see competitive positions - 5 are packed in level 0 jobs while non-competitive positions are evenly distributed among different levels except level 4. Unclassified titles are mostly in level 1 which is interns. This is mostly consistent with previous findings.</p>
 
+</div>
+</div>
 </div>
             </section>
 

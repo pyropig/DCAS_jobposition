@@ -1,2 +1,20 @@
 # Data transformation
 
+
+```{r}
+# https://dplyr.tidyverse.org/reference/mutate.html
+# https://stackoverflow.com/questions/15451251/extract-numeric-part-of-strings-of-mixed-numbers-and-characters-in-r
+library(stringr)
+regexp <- "[[:digit:]]+"
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+jobs$Title.Classification <- jobs$Title.Classification %>% str_extract(regexp)
+jobs$Title.Classification <- jobs$Title.Classification %>% factor()
+
+jobs <- jobs[!(jobs$Level == 'MY' | jobs$Level == 'M5' | jobs$Level == 'M6' | jobs$Level == 'M7'),]
+
+jobs$Level <- jobs$Level %>% str_extract(regexp)
+jobs$Level <- jobs$Level %>% factor()
+
+```
+
+The data in column Title.Classification and Level are categorical, thus need to be changed from initial readings which is characters. The classification is transformed in a following basis: Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The level have 0-4 integer leveling, however M1 ~ M4 exist representing minor 1 ~ minor 4. The record with these minor level is few in number thus converted to corresponding higher levels for analysis. There are also special cases which occur less than ten times, these cases are dropped.
