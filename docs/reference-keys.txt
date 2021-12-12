@@ -1,5 +1,10 @@
 introduction
 data-sources
+collection
+data-set-intro
+general-information
+columns-information
+issues-and-problems
 data-transformation
 missing-values
 graphing

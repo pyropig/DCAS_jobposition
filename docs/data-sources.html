@@ -24,7 +24,7 @@
 <meta name="author" content="Shuqing Shan, Weiwei Jiang" />
 
 
-<meta name="date" content="2021-11-19" />
+<meta name="date" content="2021-12-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -74,7 +74,16 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#collection"><i class="fa fa-check"></i><b>2.1</b> Collection</a></li>
+<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-set-intro"><i class="fa fa-check"></i><b>2.2</b> Data set intro</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="data-sources.html"><a href="data-sources.html#general-information"><i class="fa fa-check"></i><b>2.2.1</b> General information</a></li>
+<li class="chapter" data-level="2.2.2" data-path="data-sources.html"><a href="data-sources.html#columns-information"><i class="fa fa-check"></i><b>2.2.2</b> Columns information</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="data-sources.html"><a href="data-sources.html#issues-and-problems"><i class="fa fa-check"></i><b>2.3</b> Issues and Problems</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
 <ul>
@@ -109,7 +118,28 @@
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Data sources</h1>
+<div id="collection" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Collection</h2>
+<p>The choice of this dataset is made by the group while choosing the topic for the project. We first decide to do something with the topic of job offer, then come across this dataset. The dataset is collected and provided by the Department of Citywide Administrative Services (DCAS) and published on NYC Open data (<a href="https://data.cityofnewyork.us/City-Government/NYC-Jobs/kpav-sd4t" class="uri">https://data.cityofnewyork.us/City-Government/NYC-Jobs/kpav-sd4t</a>) There were a handful of other choice avaliable on the internet, but we choose DCAS’s data. This dataset has around three thousand rows each as a job post (till Nov 16) which is large in quantity, yet it also has 30 columns which contain a vast range of different information about each job post. More important is, the data is directly from the officals without pre-modifications made. Compared to other datasets on the web which could possibly contain underlying bias, this one win in both quantity and quality.</p>
+</div>
+<div id="data-set-intro" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Data set intro</h2>
+<div id="general-information" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> General information</h3>
+<p>This dataset contains various information about current job postings available on the City of New York’s official jobs site (<a href="http://www.nyc.gov/html/careers/html/search/search.shtml" class="uri">http://www.nyc.gov/html/careers/html/search/search.shtml</a>). As it is updating quickly on a weekly basis, we’re using the Nov 16th version of the data which stores in the resource folder of the project. The dataset contains a total of 2838 rows with 30 columns. Each row in dataset represents a jobpost once posted on New York’s job site from April 18, 2013 till November 16, 2021.</p>
+</div>
+<div id="columns-information" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Columns information</h3>
+<p>Looking at the columns, there are self-explanatory ones but there’s also columns with vague name. Here we introduce some columns need explainations. The first important column is the job id column correspond to the number representing the job post in the agency’s system. However, this id is not unique since one job posting could have two types, external and internal, recorded in column ‘posting type’. Next is the Title Classification, This is a title jurisdiction classification, each job falls in one of the following seven categories: Competitive, Cultural, Exempt, Labor, Non-Competitive, Pending Classification and Unclassified Service. The job title also has a level assignment correspond to the work duties assigned to that position, this info is recorded in ‘Level’ column.</p>
+<p>There’s two column with very similar name, Work Location and Work Location 1. This is not a duplication however, Work Location column records the location of agency posting the job, and Work Location 1 records the actual working place where employee goes every day.</p>
+<p>The last three column are all with dates, while date format is in MM/DD/YY. There’s one column here need special care: ‘Post Until’ column records the last data that, a job vacancy was be posted. There needs to be a vacancy inorder to be posted, thus a NA value here indicate the job is fully filled. Only when a job posting being withdrawn without filled will it leave record in this column.</p>
+</div>
+</div>
+<div id="issues-and-problems" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Issues and Problems</h2>
+<p>No known issues is given by the data provider, but when check data we found there’s some complete duplicating rows.</p>
 
+</div>
 </div>
             </section>
 
