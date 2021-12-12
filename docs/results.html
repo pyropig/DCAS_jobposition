@@ -106,6 +106,10 @@
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.2.1</b> Lower level job titles</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.2.2</b> higher level job titles</a></li>
 </ul></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#salary-of-jobs"><i class="fa fa-check"></i><b>5.3</b> Salary of jobs</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="results.html"><a href="results.html#distribution-of-salary"><i class="fa fa-check"></i><b>5.3.1</b> Distribution of salary</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -161,7 +165,27 @@
 <p>On level 2-4 the competitive portion is significantly higher than lower level jobs. This indicate a competition intensive job environment in government agency, no matter mid to low lever full-time workers or higher level managment workser, they all have high competitive job percentage. Level 4 however do have a slightly lower competitve level compared to level 2 and 3, marking the highest managing works are less competitive. This could because of that level 4 jobs are rare and not much people are qualified and applied to those jobs.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Viewing from another perspective, we can see competitive positions - 5 are packed in level 0 jobs while non-competitive positions are evenly distributed among different levels except level 4. Unclassified titles are mostly in level 1 which is interns. This is mostly consistent with previous findings.</p>
+</div>
+</div>
+<div id="salary-of-jobs" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Salary of jobs</h2>
+<p>One important factor people concerning when looking for jobs is the income. Different salary might affect people’s willing to apply for the job. Here we look into the salary column of the dataset.</p>
+<div id="distribution-of-salary" class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Distribution of salary</h3>
+<p>There’s three different kind of salary frequency: Annual, Daily and Hourly. Since Daily salary is few in number (24 entries), it is omitted in this analysis.</p>
+<div id="annual-salary" class="section level4" number="5.3.1.1">
+<h4><span class="header-section-number">5.3.1.1</span> Annual salary</h4>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>This is a histogram of the expected salary each job position is willing to pay annually. The red line indicates the mean value of all values, and the blue line indicates the 50% AMI(Area Median Income) of a 5-person family in NYC. (Source: <a href="https://www1.nyc.gov/site/hpd/services-and-information/area-median-income.page" class="uri">https://www1.nyc.gov/site/hpd/services-and-information/area-median-income.page</a>) According to the agency giving this data, the value left of the blue line indicate “Very-Low-Income”.</p>
+<p>We can see in this graph that the expected salary is left-skewed distributed. This is normal since in an agency, there’s always more low-level worker than high-level workers. The mean value of all salary is higher than the “Low income line”, but not much. Most of the job positions still have around the 64450 dollars of annual income for a five people family, which is the blue line.</p>
+<p>Overall, the annual salary is quite balanced but realtivly low compared to the area income level.</p>
+</div>
+<div id="hourly-salary" class="section level4" number="5.3.1.2">
+<h4><span class="header-section-number">5.3.1.2</span> Hourly salary</h4>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>This is the histogram of expected salary of hourly paid job positions. The red line is the mean, and the blue line is the 50% AMI in NYC (source: <a href="https://www.ziprecruiter.com/Salaries/Hourly-Salary--in-New-York" class="uri">https://www.ziprecruiter.com/Salaries/Hourly-Salary--in-New-York</a>). We can see that dispite being spreaded widely, a huge amount of hourly paid job receive a very low hourly salary of 18 dollars. There’s also some highly paid jobs increasing the mean, but compared to the large quantity they look more like outliers.</p>
 
+</div>
 </div>
 </div>
 </div>
