@@ -7,3 +7,11 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+Employment is a big issue that almost everyone need to face. It's common to hear 
+in the media that the companies complain that they can't find workers to fill open 
+roles while some job seekers remain desperate that they can not even get a job
+after filling out hundreds of applications. Another common scenario is that the job openings 
+and average salary statistical data varies a lot among different college major. It's quiet interesting 
+to dive into the job market area and trying to dig out some fun aspects. 
+
+To help people stay informed about the current New York City job market, we conducted our research on the  data provided by the Department of Citywide Administrative Services (DCAS) of New York, which contains current job postings available on the City of New York’s official jobs site. Our analysis will be focus on the employer's consideration: What's the most demand jobs? What's the highest paid jobs? The average time for an employer to find a qualified candidate? By analyzing 
