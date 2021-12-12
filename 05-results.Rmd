@@ -1,7 +1,14 @@
 # Results
-
 ```{r}
+library(lubridate)
+library(ggplot2)
+library(ggmosaic)
+library(dplyr)
+library(tidyr)
+library(vcd)
 library(stringr)
+```
+```{r}
 regexp <- "[[:digit:]]+"
 jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
 jobs$Title.Classification <- jobs$Title.Classification %>% str_extract(regexp)
@@ -13,18 +20,67 @@ jobs$Level <- jobs$Level %>% str_extract(regexp)
 jobs$Level <- jobs$Level %>% factor()
 
 ```
+## Job openings 
 
+One of the most frequently asked questions about the employment is that what are the most in-demanding jobs. In this dataset, each record includes the details about the concrete business title, job Category and corresponding career level of this job. We aim to provide some insights about the trend of New York City official jobs.
+
+### The most in-demanding job categories.
+
+The occupational group in which the posted job belongs, such as: Administration & Human Resources,Communications & Intergovernmental Affairs,Constituent Services & Community Programs
+,Engineering, Architecture, & Planning,Finance, Accounting, & Procurement
+,Health, Technology, Data & Innovation, Legal Affairs,Building Operations & Maintenance,Policy, Research & Analysis,Public Safety, Inspections, & Enforcement,Social Services,Information Technology & Telecommunications.
+
+We divided each job into its corresponding category and examined the number of released job opportunities of each category.
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+Basic_job_cate <- Basic_job_Cate <- list ("Administration & Human Resources", "Building Operations & Maintenance", "Clerical & Administrative Support","Communications & Intergovernmental Affairs","Constituent Services & Community Programs","Engineering, Architecture, & Planning", "Finance, Accounting, & Procurement","Health","Information Technology & Telecommunications","Legal","Policy, Research & Analysis","Public Safety, Inspections, & Enforcement","Social Services","Technology, Data & Innovation")
+
+myfunc <- function(x, list) { for (i in list) {if (str_detect(x["Job.Category"],i)) {return(i)}}}
+new_job_cate <- apply(jobs[which(!is.na(jobs$Job.Category)),], 1, myfunc, list = Basic_job_Cate)
+new_job_cate <- new_job_cate %>% as.list() %>% as_tibble()
+new_job_cate <- as.data.frame(t(new_job_cate))
+colnames(new_job_cate) <- c("category")
+jobs$PostingYear <- as.Date(jobs$Posting.Date, format = "%m/%d/%Y")
+new_job_cate$year <- year(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
+new_job_cate$x_position <- jobs[which(!is.na(jobs$Job.Category)),]$X..Of.Positions
+demand_cate <- aggregate(new_job_cate$x_position, by = list(Category = new_job_cate$category),FUN = sum)
+```
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+ggplot(demand_cate, aes(x = reorder(Category,-x),y = x)) +
+  geom_bar(stat = "identity",fill = "#FAA028",color = "black") + 
+  scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
+  guides(x = guide_axis(angle = 0)) +
+  scale_y_continuous(expand = c(0,10)) +
+  theme_light() +
+  geom_text(aes(label=x), vjust=1.2, color="black", size=3.5) +
+  xlab("Category") +
+  ylab("Job Openings")
+```
+
+### The top 25 in-demanding business title
+
+In this section, we set our sight on the specific business title. By analyzing this, we try to dig out what kind of skills and roles are most needed by New York City service.
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+title <- jobs %>% group_by(Business.Title) %>% summarise(freq = sum(X..Of.Positions))
+top_title <- title %>% top_n(freq,n = 25)
+ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
+  geom_point(size = 3, color = "SteelBlue") +
+  labs(x="Count",
+       y = "Title",
+       title="Most in-demanding Bussiness Title") +
+  theme_linedraw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
 ## Job level and classification
 
 In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.
 
 ```{r fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
-library(ggplot2)
-library(ggmosaic)
-library(dplyr)
-library(tidyr)
-library(vcd)
 # jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
 # https://cran.r-project.org/web/packages/ggmosaic/vignettes/ggmosaic.html
 # mosaic(Title.Classification~Level, data=jobs, direction=c('v', 'h'))
