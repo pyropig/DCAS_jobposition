@@ -28,3 +28,11 @@ There's also two date column: 'Posted From' and 'Post Until' being imported as c
 ## Transformation
 
 As stated in data collection part, this dataset is relatively clean and not much needed to be done for transformation. The few things we done is adding columns of mean value and difference value for some numrical column for data presenting. Another added column is the converted meaningful NA value of the Post Until column. We also did covert the department name of each job posting to a shorter version to fit the size of the graph. Some mis-spelling in original data is corrected in this process.
+
+Newly generated columns are the following:
+
+|Column Name |Description|
+|:----:|:-------|
+|Salary Mean  |Mean value of salary band of the job post. (num)|
+|Filled  |If the job position is filled or not. (Boolean)|
+|Post Difference  |Posting date numbered in days untile withdrawn for unfilled job positions. (num) |

@@ -151,6 +151,33 @@
 <div id="transformation" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Transformation</h2>
 <p>As stated in data collection part, this dataset is relatively clean and not much needed to be done for transformation. The few things we done is adding columns of mean value and difference value for some numrical column for data presenting. Another added column is the converted meaningful NA value of the Post Until column. We also did covert the department name of each job posting to a shorter version to fit the size of the graph. Some mis-spelling in original data is corrected in this process.</p>
+<p>Newly generated columns are the following:</p>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Column Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Salary Mean</td>
+<td align="left">Mean value of salary band of the job post. (num)</td>
+</tr>
+<tr class="even">
+<td align="center">Filled</td>
+<td align="left">If the job position is filled or not. (Boolean)</td>
+</tr>
+<tr class="odd">
+<td align="center">Post Difference</td>
+<td align="left">Posting date numbered in days untile withdrawn for unfilled job positions. (num)</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
