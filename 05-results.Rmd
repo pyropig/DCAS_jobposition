@@ -98,10 +98,14 @@ ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
 ### What are the month trends of job openings
 ```{r}
 new_job_cate$month <- month(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
+mycolors <- c("#2c7fB8",brewer.pal(12, "Set3"),"#121a20")
 month_plot <- new_job_cate %>% group_by(category,month) %>% summarise(val = sum(x_position)) %>% ungroup(month)
-ggplot(month_plot,aes(x = as.factor(month),y = val,color = category,group = category))
+ggplot(month_plot,aes(x = as.factor(month),y = val,color = category,group = category)) +
   geom_point() + 
   geom_line() +
+  theme_light() +
+  theme(legend.title = element_text(size = 8),legend.text = element_text(size = 4)) +
+  scale_color_manual(values = mycolors) +
   xlab('month') + 
   ylab('Number of positions')
 
