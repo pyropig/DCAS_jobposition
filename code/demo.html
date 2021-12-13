@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Data &amp; Colour Example</title>
+    <script src="//d3js.org/d3.v6.min.js"></script>
+    <style>
+      html,
+      body,
+      #vis {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <label for="cars">Choose a Category:</label>
+      <select name="cate" id="cate">
+                <option
+          value="Engineering, Architecture, & Planning"
+        >
+          Engineering, Architecture, & Planning
+        </option>
+        <option value="Technology, Data & Innovation" ,selected>
+          Technology, Data & Innovation
+        </option>
+
+        <option value="Finance, Accounting, & Procurement">
+          Finance, Accounting, & Procurement
+        </option>
+        <option value="Policy, Research & Analysis">
+          Policy, Research & Analysis
+        </option>
+        <option value="Social Services">
+          Social Services
+        </option>
+        <option value="Administration & Human Resources">
+          Administration & Human Resources
+        </option>
+
+        <option value="Health">Health</option>
+        <option
+          value="Public Safety, Inspections, & Enforcement"
+        >
+          Public Safety, Inspections, & Enforcement
+        </option>
+          <option
+          value="Constituent Services & Community Programs"
+        >
+          Constituent Services & Community Programs
+        </option>
+        <option value="Building Operations & Maintenance">
+          Building Operations & Maintenance
+        </option>
+        <option value="Legal">Legal</option>
+        <option
+          value="Communications & Intergovernmental Affairs"
+        >
+          Communications & Intergovernmental Affairs
+        </option>
+      </select>
+    </form>
+    <div id="vis"></div>
+    <script>
+
+      var width = document.getElementById('vis')
+        .clientWidth;
+      var height = document.getElementById('vis')
+        .clientHeight;
+
+      var margin = {
+        top: 20,
+        bottom: 70,
+        left: 350,
+        right: 20,
+      };
+
+      var svg = d3
+        .select('#vis')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr(
+          'transform',
+          'translate(' +
+            margin.left +
+            ',' +
+            margin.right +
+            ')'
+        );
+
+      width = width - margin.left - margin.right;
+      height = height - margin.top - margin.bottom;
+
+      var data = {};
+
+      var y_scale = d3
+        .scaleBand()
+        .rangeRound([0, height])
+        .padding(0.1);
+
+      var x_scale = d3.scaleLinear().range([0, width]);
+
+      var colour_scale = d3
+        .scaleQuantile()
+        .range([
+  		"#FFFFD9",
+    "#EDF8B1",
+    "#C7E9B4",
+    "#7FCDBB",
+    "#41B6C4",
+    "#1D91C0",
+    "#225EA8",
+    "#0C2C84"
+        ]);
+
+      var y_axis = d3.axisLeft(y_scale);
+      var x_axis = d3.axisBottom(x_scale);
+
+      svg
+        .append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')');
+
+      svg.append('g').attr('class', 'y axis');
+      function update(cate) {
+        d3.csv(
+          'https://raw.githubusercontent.com/pyropig/DCAS_jobposition/main/itdata/' +
+            cate +
+            '.csv'
+        ).then(function (csv_data) {
+          var t = d3.transition().duration(2000);
+
+          var title = csv_data.map(function (d) {
+            return d.title;
+          });
+          y_scale.domain(title);
+
+          var max_value = d3.max(csv_data, function (d) {
+            return +d.mean;
+          });
+
+          x_scale.domain([0, max_value + 20000]);
+          colour_scale.domain([0, max_value]);
+
+          var bars = svg.selectAll('.bar').data(csv_data);
+
+          bars.exit().remove();
+
+          var new_bars = bars
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('y', function (d) {
+              return y_scale(d.title);
+            })
+            .attr('height', y_scale.bandwidth())
+            .attr('x', x_scale(0))
+            .attr('width', function (d) { 		       x_scale(d.mean)});
+
+          //move bars with size, then change axis name
+          new_bars
+            .merge(bars)
+            .transition(t)
+            .attr('x', function (d) {
+              return y_scale(d.mean);
+            })
+            .attr('width', function (d) {
+              return x_scale(d.mean);
+            })
+            .attr('fill', function (d) {
+              return colour_scale(d.mean);
+            });
+
+          svg.select('.x.axis').call(x_axis);
+
+          svg.select('.y.axis').transition(t).call(y_axis);
+					     svg.append("text")
+              .attr("class", "title")
+              .attr("text-anchor", "end")
+              .attr("x", 380)
+              .attr("y", height-415)
+              .text("The Top 10 High-paying Title in Each Category"); 
+             	svg.append("text")
+              .attr("class", "title")
+              .attr("text-anchor", "end")
+              .attr("x", 300)
+              .attr("y", height+30)
+              .text("Salary ($/Annual)")
+          		.style("font-size", "10px");
+            
+ 
+        });
+      }
+
+      update('Engineering, Architecture, & Planning');
+
+      var slider = d3.select('#cate');
+      slider.on('change', function () {
+        update(this.value);
+      });
+    </script>
+  </body>
+</html>
