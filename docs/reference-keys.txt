@@ -16,7 +16,7 @@ job-openings
 the-most-in-demanding-job-categories.
 the-top-25-in-demanding-business-title
 which-career-leavel-is-mostly-need-in-each-category
-job-level-and-classification
+what-are-the-month-trends-of-job-openings
 lower-level-job-titles
 higher-level-job-titles
 salary-of-jobs
