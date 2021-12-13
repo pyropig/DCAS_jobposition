@@ -1,4 +1,5 @@
 # Results
+
 ```{r}
 library(lubridate)
 library(ggplot2)
@@ -6,6 +7,7 @@ library(ggmosaic)
 library(dplyr)
 library(tidyr)
 library(vcd)
+library(RColorBrewer)
 library(stringr)
 ```
 ```{r}
@@ -20,6 +22,7 @@ jobs$Level <- jobs$Level %>% str_extract(regexp)
 jobs$Level <- jobs$Level %>% factor()
 
 ```
+
 ## Job openings 
 
 One of the most frequently asked questions about the employment is that what are the most in-demanding jobs. In this dataset, each record includes the details about the concrete business title, job Category and corresponding career level of this job. We aim to provide some insights about the trend of New York City official jobs.
@@ -96,6 +99,7 @@ ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
 ```
 
 ### What are the month trends of job openings
+
 ```{r}
 new_job_cate$month <- month(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
 mycolors <- c("#2c7fB8",brewer.pal(12, "Set3"),"#121a20")
@@ -110,7 +114,8 @@ ggplot(month_plot,aes(x = as.factor(month),y = val,color = category,group = cate
   ylab('Number of positions')
 
 ```
-## Job level and classification
+
+## Job features
 
 In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.
 
@@ -143,9 +148,7 @@ ggplot(data=jobs) +
 
 Viewing from another perspective, we can see competitive positions - 5 are packed in level 0 jobs while non-competitive positions are evenly distributed among different levels except level 4. Unclassified titles are mostly in level 1 which is interns. This is mostly consistent with previous findings.
 
-## Salary of jobs
-
-One important factor people concerning when looking for jobs is the income. Different salary might affect people's willing to apply for the job. Here we look into the salary column of the dataset.
+One other important factor people concerning when looking for jobs is the income. Different salary might affect people's willing to apply for the job. Here we look into the salary column of the dataset.
 
 ### Distribution of salary
 
@@ -192,3 +195,43 @@ hourly[!is.na(hourly$Salary.Mean),] %>%
 ```
 
 This is the histogram of expected salary of hourly paid job positions. The red line is the mean, and the blue line is the 50% AMI in NYC (source: https://www.ziprecruiter.com/Salaries/Hourly-Salary--in-New-York). We can see that dispite being spreaded widely, a huge amount of hourly paid job receive a very low hourly salary of 18 dollars. There's also some highly paid jobs increasing the mean, but compared to the large quantity they look more like outliers. 
+
+## Job filling and posting time
+
+There's two column in the dataset recording posting date and withdrawn date of each job posting. A job posting will only withdraw when it can't find enough people to fill the positions. These two date records a time span of each job posting.
+
+### Salary over job filling and level
+
+```{r}
+# https://www.statmethods.net/input/dates.html
+annual$Posting.Date <- as.Date(annual$Posting.Date, "%m/%d/%Y")
+annual$Post.Until <- as.Date(annual$Post.Until, "%d-%b-%y")
+annual$Filled <- is.na(annual$Post.Until)
+
+annual[!is.na(annual$Salary.Mean),] %>%
+  ggplot(aes(x=Salary.Mean)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 5000,
+                 colour="black", fill="white")+
+  facet_grid(Level ~ Filled)
+
+
+```
+
+This is mean annual salary in groups of job level and the status of filling or not. We can see that the distribution of filled (TRUE column) job postions is generally higher than the unfilled ones, showing that salary do affect people's willingness of applying for a job. It also show there's generally more filled jobs than unfilled, and the salary increases as level increases.
+
+### Unfilled jobs' waiting date
+
+```{r}
+annual <- annual %>% mutate(Post.Difference = Post.Until - Posting.Date)
+
+annual[!is.na(annual$Post.Difference),] %>%
+  ggplot(aes(x=Post.Difference)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 20,
+                 colour="black", fill="white")+
+  facet_grid(Level ~ .)
+
+```
+
+This is the number of waiting date until a job position is withdrawn without being filled. There isn't much difference among different level of jobs, all jobs have a span of 10-30 days waiting time. The second large waiting span is 70-90 days waiting and the third is 50-70 days of waiting. This indicate an agency normally wait either one month or three month for a job postion to be filled before they withdraw.
