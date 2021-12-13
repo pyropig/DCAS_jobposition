@@ -151,6 +151,69 @@
 <div id="general-information" class="section level3" number="2.2.1">
 <h3><span class="header-section-number">2.2.1</span> General information</h3>
 <p>This dataset contains various information about current job postings available on the City of New York’s official jobs site (<a href="http://www.nyc.gov/html/careers/html/search/search.shtml" class="uri">http://www.nyc.gov/html/careers/html/search/search.shtml</a>). As it is updating quickly on a weekly basis, we’re using the Nov 16th version of the data which stores in the resource folder of the project. The dataset contains a total of 2838 rows with 30 columns. Each row in dataset represents a jobpost once posted on New York’s job site from April 18, 2013 till November 16, 2021.</p>
+<p>Part of important column used in analysis is described below:</p>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Column Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Agency</td>
+<td align="left">Name of the New York City agency (“agency” or “hiring agency”) where a job vacancy exists. (Char)</td>
+</tr>
+<tr class="even">
+<td align="center"># Of Positions</td>
+<td align="left">The total number of vacancies to be filled under the job ID listed. (num)</td>
+</tr>
+<tr class="odd">
+<td align="center">Business Title</td>
+<td align="left">The “business title”, or “office title”, for the job posting listed. (Char)</td>
+</tr>
+<tr class="even">
+<td align="center">Title Classification</td>
+<td align="left">The civil service title jurisdiction classification that corresponds to the civil service title posted. (Factor)</td>
+</tr>
+<tr class="odd">
+<td align="center">Level</td>
+<td align="left">The civil service title assignment level that the posted position is being filled at. (Factor)</td>
+</tr>
+<tr class="even">
+<td align="center">Job Category</td>
+<td align="left">The occupational group in which the posted job belongs (Char)</td>
+</tr>
+<tr class="odd">
+<td align="center">Salary Range From</td>
+<td align="left">The lowest salary on a job posting for a position within the salary band for the related civil service title. (num)</td>
+</tr>
+<tr class="even">
+<td align="center">Salary Range To</td>
+<td align="left">The highest salary on a job posting for a position within the salary band for the related civil service title. (num)</td>
+</tr>
+<tr class="odd">
+<td align="center">Salary Frequency</td>
+<td align="left">The frequency of proposed salary. Possible salary frequency values include “hourly”, “daily”, and “annual”. (Factor)</td>
+</tr>
+<tr class="even">
+<td align="center">Hours/Shift</td>
+<td align="left">Projected working hours, working days and shift information. (Char)</td>
+</tr>
+<tr class="odd">
+<td align="center">Posting Date</td>
+<td align="left">The date and time that a job vacancy was posted. (Date)</td>
+</tr>
+<tr class="even">
+<td align="center">Post Until</td>
+<td align="left">The last date that a job vacancy will be posted; blank cells indicate job vacancy posts that will remain listed until the position is filled (Date)</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="columns-information" class="section level3" number="2.2.2">
 <h3><span class="header-section-number">2.2.2</span> Columns information</h3>

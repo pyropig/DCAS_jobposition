@@ -10,6 +10,25 @@ The choice of this dataset is made by the group while choosing the topic for the
 
 This dataset contains various information about current job postings available on the City of New York’s official jobs site (http://www.nyc.gov/html/careers/html/search/search.shtml). As it is updating quickly on a weekly basis, we're using the Nov 16th version of the data which stores in the resource folder of the project. The dataset contains a total of 2838 rows with 30 columns. Each row in dataset represents a jobpost once posted on New York's job site from April 18, 2013 till November 16, 2021. 
 
+Part of important column used in analysis is described below:
+
+|Column Name |Description|
+|:----:|:-------|
+|Agency   |Name of the New York City agency (“agency” or “hiring agency”) where a job vacancy exists. (Char)|
+|# Of Positions   |The total number of vacancies to be filled under the job ID listed. (num)|
+|Business Title   |The "business title", or "office title", for the job posting listed.   (Char)|
+|Title Classification   |The civil service title jurisdiction classification that corresponds to the civil service title posted.     (Factor)|
+|Level   |The civil service title assignment level that the posted position is being filled at. (Factor)|
+|Job Category   |The occupational group in which the posted job belongs (Char)|
+|Salary Range From   |The lowest salary on a job posting for a position within the salary band for the related civil service title. (num)|
+|Salary Range To   | The highest salary on a job posting for a position within the salary band for the related civil service title. (num)|
+|Salary Frequency   |The frequency of proposed salary.  Possible salary frequency values include “hourly”, “daily”, and “annual”.  (Factor)|
+|Hours/Shift  |Projected working hours, working days and shift information. (Char)|
+|Posting Date  |The date and time that a job vacancy was posted. (Date)|
+|Post Until  |The last date that a job vacancy will be posted; blank cells indicate job vacancy posts that will remain listed until the position is filled (Date)|
+
+
+
 ### Columns information
 
 Looking at the columns, there are self-explanatory ones but there's also columns with vague name. Here we introduce some columns need explanations. The first important column is the job id column correspond to the number representing the job post in the agency's system. However, this id is not unique since one job posting could have two types, external and internal, recorded in column 'posting type'. Next is the Title Classification, This is a title jurisdiction classification, each job falls in one of the following five categories represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The job title also has a level assignment correspond to the work duties assigned to that position, this info is recorded in 'Level' column. With 0-1 level means interns and part-time workers, 2 meaning normal full-time worker, and 3-4 meaning lower to higher management worker. 
