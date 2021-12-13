@@ -1,3 +1,5 @@
 # Interactive component
 
-<iframe src="code/demo.html" width="610" height="800"> </iframe>
+The Top 10 High-paying Title in Each Category
+
+<iframe src="code/demo.html" width="800" height="800"> </iframe>

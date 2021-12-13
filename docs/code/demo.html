@@ -72,7 +72,7 @@
       var margin = {
         top: 20,
         bottom: 70,
-        left: 350,
+        left: 200,
         right: 20,
       };
 
@@ -124,7 +124,7 @@
         .attr('class', 'x axis')
         .attr('transform', 'translate(0,' + height + ')');
 
-      svg.append('g').attr('class', 'y axis');
+      svg.append('g').attr('class', 'y axis').style("font-size","7px");
       function update(cate) {
         d3.csv(
           'https://raw.githubusercontent.com/pyropig/DCAS_jobposition/main/itdata/' +
@@ -177,12 +177,6 @@
           svg.select('.x.axis').call(x_axis);
 
           svg.select('.y.axis').transition(t).call(y_axis);
-					     svg.append("text")
-              .attr("class", "title")
-              .attr("text-anchor", "end")
-              .attr("x", 380)
-              .attr("y", height-415)
-              .text("The Top 10 High-paying Title in Each Category"); 
              	svg.append("text")
               .attr("class", "title")
               .attr("text-anchor", "end")
