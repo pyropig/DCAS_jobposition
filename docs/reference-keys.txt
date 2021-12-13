@@ -6,6 +6,8 @@ general-information
 columns-information
 issues-and-problems
 data-transformation
+cleaning
+transformation
 missing-values
 graphing
 analysis
@@ -17,10 +19,7 @@ the-most-in-demanding-job-categories.
 the-top-25-in-demanding-business-title
 which-career-leavel-is-mostly-need-in-each-category
 what-are-the-month-trends-of-job-openings
-<<<<<<< HEAD
-=======
 job-features
->>>>>>> 506c275cd56ad2b53882d87475f9039248b3bf43
 lower-level-job-titles
 higher-level-job-titles
 distribution-of-salary
