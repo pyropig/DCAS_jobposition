@@ -17,11 +17,17 @@ the-most-in-demanding-job-categories.
 the-top-25-in-demanding-business-title
 which-career-leavel-is-mostly-need-in-each-category
 what-are-the-month-trends-of-job-openings
+<<<<<<< HEAD
+=======
+job-features
+>>>>>>> 506c275cd56ad2b53882d87475f9039248b3bf43
 lower-level-job-titles
 higher-level-job-titles
-salary-of-jobs
 distribution-of-salary
 annual-salary
 hourly-salary
+job-filling-and-posting-time
+salary-over-job-filling-and-level
+unfilled-jobs-waiting-date
 interactive-component
 conclusion

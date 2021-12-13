@@ -18,3 +18,7 @@ jobs$Level <- jobs$Level %>% factor()
 ```
 
 The data in column Title.Classification and Level are categorical, thus need to be changed from initial readings which is characters. The classification is transformed in a following basis: Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The level have 0-4 integer leveling, however M1 ~ M4 exist representing minor 1 ~ minor 4. The record with these minor level is few in number thus converted to corresponding higher levels for analysis. There are also special cases which occur less than ten times, these cases are dropped.
+
+Next, since the salary of a job posting is being represented as an interval, we choose the mean value of the interval as the expected salary of each job posting for analysis. This becomes a new column Salary.Mean
+
+There's also some date column being imported as character, thus we need to convert them to date values.
