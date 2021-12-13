@@ -30,3 +30,6 @@ salary-over-job-filling-and-level
 unfilled-jobs-waiting-date
 interactive-component
 conclusion
+limitations
+future-directions
+lesson-learnt

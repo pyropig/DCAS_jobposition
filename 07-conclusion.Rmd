@@ -1,2 +1,13 @@
 # Conclusion
 
+## Limitations
+
+
+
+## Future directions
+
+Among different job level and title classification, we discovered their different distributions. This can be further discussed in a facet of different department. Beyond this, we can add further analysis with different career level required. This can be combined with salary part to give further insights.
+
+From out analysis, we can see that salary plays a decent role affecting filling of job positions while waiting time is mostly the same for different jobs. This indicates an underlying relationship between salary and filling percentage. What is the factor of people's application to jobs? Besides salary, job description and work location are also possible factors. However these are character columns and will need NLP to do further analysis.
+
+## Lesson learnt
