@@ -11,6 +11,7 @@ library(vcd)
 library(RColorBrewer)
 library(stringr)
 library(gridExtra)
+library(tidyverse)
 ```
 
 ```{r}
@@ -64,9 +65,29 @@ ggplot(demand_cate, aes(x = reorder(Category,-x),y = x)) +
   ylab("Job Openings")
 ```
 
-### The top 25 in-demanding business title
+As we can seen from the graph above, Public Safety, Inspections, & Enforcement, Building Operations & Maintenance and Legal affair are the most hiring industries. Before diving into the data, I thought that the Tech industry would be the hottest industry for hiring. But the fact is that, there are nearly more than twice opportunities in Public Safety, Inspections, & Enforcement industry. Indeed, this may caused by the feature of this industry owning the high-mobility employees and the increasing demand for security during the pandemic period. We may explore further by examining the career level of these jobs and the detail business title of each job in the following chaper.
 
-In this section, we set our sight on the specific business title. By analyzing this, we try to dig out what kind of skills and roles are most needed by New York City service.
+### Which career leavel is mostly need in each Category
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+new_job_cate$Career_level <- jobs[which(!is.na(jobs$Career.Level)),]$Career.Level
+career_plot <- new_job_cate %>% group_by(category,Career_level) %>% summarise(val = sum(x_position)) %>% ungroup(Career_level)
+career_plot$Career_level <- fct_relevel(career_plot$Career_level,'Student','Entry-Level','Experienced (non-manager)','Manager','Executive')
+cate_level <- demand_cate[order(-demand_cate$x),]$Category
+career_plot$category <- fct_relevel(career_plot$category,cate_level)
+ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
+    geom_bar(stat = "identity",color = "black",position='stack') + 
+    scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
+    guides(x = guide_axis(angle = 90)) +
+    scale_y_continuous(expand = c(0,10)) +
+    theme_light() +
+    scale_fill_manual(values = c("#AC92EB","#4FC1E8","#A0D568","#FFCE54","#ED5564")) + 
+    xlab("Category") +
+    ylab("Job Openings")
+```
+From this stacked bar chart, we may learn more about the feature of each industry. For the top two most hiring industries, we noticed that the less-experienced level(student and entry-level) accounts for nearly half or more job openings in the whole job market. If we think further, this feature may reveal that these jobs do not require much domain knowledge and are easy to be  substituted. So when you step into these industries, the most common scenario may be that you are assigned to handle with very basic issues because of the labor shortage. Another interesting industries are health, technology and social service. These industries nearly have no less-experienced level job openings, which suggests that high professional knowledge is required for relevant work. If you are interested in related work, you must be work hard.
+
+### The top 25 in-demanding business title
+When we trying to find a job, the most common question we might ask might be what's the most in-demanding job and what's the most reward job. In this section, we set our sight on the specific business title. By analyzing this, we try to provide some basic information about the New York City Office's job market.
 
 ```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
 title <- jobs %>% group_by(Business.Title) %>% summarise(freq = sum(X..Of.Positions))
@@ -99,32 +120,11 @@ p2<- ggplot(salary_plot, aes(x = ave, y = fct_reorder(Business.Title, ave))) +
         axis.title=element_text(size=8,face="bold"))
 grid.arrange(p1, p2, nrow = 2)
 ```
-
-```{r}
-
-```
-
-### Which career leavel is mostly need in each Category
-
-```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
-new_job_cate$Career_level <- jobs[which(!is.na(jobs$Career.Level)),]$Career.Level
-career_plot <- new_job_cate %>% group_by(category,Career_level) %>% summarise(val = sum(x_position)) %>% ungroup(Career_level)
-career_plot$Career_level <- fct_relevel(career_plot$Career_level,'Student','Entry-Level','Experienced (non-manager)','Manager','Executive')
-cate_level <- demand_cate[order(-demand_cate$x),]$Category
-career_plot$category <- fct_relevel(career_plot$category,cate_level)
-ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
-    geom_bar(stat = "identity",color = "black",position='stack') + 
-    scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
-    guides(x = guide_axis(angle = 90)) +
-    scale_y_continuous(expand = c(0,10)) +
-    theme_light() +
-    scale_fill_manual(values = c("#AC92EB","#4FC1E8","#A0D568","#FFCE54","#ED5564")) + 
-    xlab("Category") +
-    ylab("Job Openings")
-```
+Reasonable in sense that the police and city public property managers are the most in-demanding jobs. These areas draws on a large quantity of human labors and requires more in the pandemic period,which make the Public Safety, Inspections, & Enforcement industry the most in-demanding industry. And we can see from the most rewarded business title plot that the gap between these jobs are not that huge. One reasonable explanation is that these jobs are kind of civil servants, so profit is not the first purpose of these related agency.
 
 ### What are the month trends of job openings
 
+Another interesting question is that what's the best time to find a job during a year. We analysis the posting date of each job and group them by the Job Category.
 ```{r}
 new_job_cate$month <- month(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
 mycolors <- c("#2c7fB8",brewer.pal(12, "Set3"),"#121a20")
@@ -139,6 +139,8 @@ ggplot(month_plot,aes(x = as.factor(month),y = val,color = category,group = cate
   ylab('Number of positions')
 
 ```
+The above plot depicted the job opening patterns for different industries. The job openings is not uniformly distributed around the year. So When you find it's hard to find a job, it might because that you pick a wrong time in a year. Although they do not hold a universal pattern, they share some trend in common. Generally speaking, October is the most thriving job seeking month for most industry. There are some exceptional industries. For Public Safety, Inspections, & Enforcement industry, there is a sudden spikes in June and July. One possible explanation is that some job openings are internal for the graduates of Police academy and these two months are the usual graduating months. Another exceptional industries groups are Building Operations & Maintenance,
+Health and Legal affair. These industries share a sudden increasing of the job opening line in the early month of a year. The deep reasons may need extra data to explore. 
 
 ## Job features
 
