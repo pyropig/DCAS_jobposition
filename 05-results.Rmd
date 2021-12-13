@@ -6,10 +6,13 @@ library(ggplot2)
 library(ggmosaic)
 library(dplyr)
 library(tidyr)
+library(RColorBrewer)
 library(vcd)
 library(RColorBrewer)
 library(stringr)
+library(gridExtra)
 ```
+
 ```{r}
 regexp <- "[[:digit:]]+"
 jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
@@ -68,7 +71,7 @@ In this section, we set our sight on the specific business title. By analyzing t
 ```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
 title <- jobs %>% group_by(Business.Title) %>% summarise(freq = sum(X..Of.Positions))
 top_title <- title %>% top_n(freq,n = 25)
-ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
+p1 <- ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
   geom_point(size = 3, color = "SteelBlue") +
   labs(x="Count",
        y = "Title",
@@ -76,7 +79,29 @@ ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
   theme_linedraw() +
   theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()) +
-  theme(plot.title = element_text(hjust = 0.5))
+    theme(plot.title = element_text(hjust = 0.5,size = 8),
+        axis.text=element_text(size=6),
+        axis.title=element_text(size=8,face="bold"))
+
+top_salary <- jobs[which(jobs$Salary.Frequency == "Annual"),][,c("Business.Title","Salary.Range.From","Salary.Range.To")]
+top_salary <- top_salary %>% mutate(Salary_Mean = ceiling((Salary.Range.From + Salary.Range.To)/2))
+salary_plot <- top_salary %>% group_by(Business.Title) %>% summarise(ave = mean(Salary_Mean)) %>% top_n(ave,n=25)
+p2<- ggplot(salary_plot, aes(x = ave, y = fct_reorder(Business.Title, ave))) +
+  geom_point(size = 2, color = "SteelBlue") +
+  labs(x="Salary ($/Annual)",
+       y = "Title",
+       title="Most rewarded Bussiness Title") +
+  theme_linedraw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5,size = 8),
+        axis.text=element_text(size=6),
+        axis.title=element_text(size=8,face="bold"))
+grid.arrange(p1, p2, nrow = 2)
+```
+
+```{r}
+
 ```
 
 ### Which career leavel is mostly need in each Category
