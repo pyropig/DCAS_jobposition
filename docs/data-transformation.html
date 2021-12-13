@@ -102,12 +102,26 @@
 <li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#the-top-25-in-demanding-business-title"><i class="fa fa-check"></i><b>5.1.2</b> The top 25 in-demanding business title</a></li>
 <li class="chapter" data-level="5.1.3" data-path="results.html"><a href="results.html#which-career-leavel-is-mostly-need-in-each-category"><i class="fa fa-check"></i><b>5.1.3</b> Which career leavel is mostly need in each Category</a></li>
 <li class="chapter" data-level="5.1.4" data-path="results.html"><a href="results.html#what-are-the-month-trends-of-job-openings"><i class="fa fa-check"></i><b>5.1.4</b> What are the month trends of job openings</a></li>
+<<<<<<< HEAD
 <li class="chapter" data-level="5.1.5" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.1.5</b> Lower level job titles</a></li>
 <li class="chapter" data-level="5.1.6" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.1.6</b> higher level job titles</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#salary-of-jobs"><i class="fa fa-check"></i><b>5.2</b> Salary of jobs</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#distribution-of-salary"><i class="fa fa-check"></i><b>5.2.1</b> Distribution of salary</a></li>
+=======
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#job-features"><i class="fa fa-check"></i><b>5.2</b> Job features</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#lower-level-job-titles"><i class="fa fa-check"></i><b>5.2.1</b> Lower level job titles</a></li>
+<li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#higher-level-job-titles"><i class="fa fa-check"></i><b>5.2.2</b> higher level job titles</a></li>
+<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#distribution-of-salary"><i class="fa fa-check"></i><b>5.2.3</b> Distribution of salary</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#job-filling-and-posting-time"><i class="fa fa-check"></i><b>5.3</b> Job filling and posting time</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="results.html"><a href="results.html#salary-over-job-filling-and-level"><i class="fa fa-check"></i><b>5.3.1</b> Salary over job filling and level</a></li>
+<li class="chapter" data-level="5.3.2" data-path="results.html"><a href="results.html#unfilled-jobs-waiting-date"><i class="fa fa-check"></i><b>5.3.2</b> Unfilled jobs’ waiting date</a></li>
+>>>>>>> 506c275cd56ad2b53882d87475f9039248b3bf43
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
@@ -134,6 +148,8 @@
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
 <p>The data in column Title.Classification and Level are categorical, thus need to be changed from initial readings which is characters. The classification is transformed in a following basis: Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The level have 0-4 integer leveling, however M1 ~ M4 exist representing minor 1 ~ minor 4. The record with these minor level is few in number thus converted to corresponding higher levels for analysis. There are also special cases which occur less than ten times, these cases are dropped.</p>
+<p>Next, since the salary of a job posting is being represented as an interval, we choose the mean value of the interval as the expected salary of each job posting for analysis. This becomes a new column Salary.Mean</p>
+<p>There’s also some date column being imported as character, thus we need to convert them to date values.</p>
 
 </div>
             </section>
