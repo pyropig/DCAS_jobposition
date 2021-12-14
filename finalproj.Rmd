@@ -1,0 +1,481 @@
+--- 
+title: "DCAS Job Position"
+author: "Shuqing Shan, Weiwei Jiang"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+Employment is a big issue that almost everyone need to face. It's common to hear 
+in the media that the companies complain that they can't find workers to fill open 
+roles while some job seekers remain desperate that they can not even get a job
+after filling out hundreds of applications. Another common scenario is that the job openings 
+and average salary statistical data varies a lot among different college major. It's quiet interesting 
+to dive into the job market area and trying to dig out some fun aspects. 
+
+To help people stay informed about the current New York City job market, we conducted our research on the  data provided by the Department of Citywide Administrative Services (DCAS) of New York, which contains current job postings available on the City of New York’s official jobs site. Our analysis will be focus on the employer's consideration: What's the most demand jobs? What's the highest paid jobs? The average time for an employer to find a qualified candidate? Through the analysis, we want to provide some insights about the New York Citywide job market.
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data sources
+
+## Collection
+
+The choice of this dataset is made by the group while choosing the topic for the project. We first decide to do something with the topic of job offer, then come across this dataset. The dataset is collected and provided by the Department of Citywide Administrative Services (DCAS) and published on NYC Open data (https://data.cityofnewyork.us/City-Government/NYC-Jobs/kpav-sd4t) There were a handful of other choice available on the internet, but we choose DCAS's data. This dataset has around three thousand rows each as a job post (till Nov 16) which is large in quantity, yet it also has 30 columns which contain a vast range of different information about each job post. More important is, the data is directly from the officals without pre-modifications made. Compared to other datasets on the web which could possibly contain underlying bias, this one win in both quantity and quality.
+
+## Data set intro
+
+### General information
+
+This dataset contains various information about current job postings available on the City of New York’s official jobs site (http://www.nyc.gov/html/careers/html/search/search.shtml). As it is updating quickly on a weekly basis, we're using the Nov 16th version of the data which stores in the resource folder of the project. The dataset contains a total of 2838 rows with 30 columns. Each row in dataset represents a jobpost once posted on New York's job site from April 18, 2013 till November 16, 2021. 
+
+Part of important column used in analysis is described below:
+
+|Column Name |Description|
+|:----:|:-------|
+|Agency   |Name of the New York City agency (“agency” or “hiring agency”) where a job vacancy exists. (Char)|
+|# Of Positions   |The total number of vacancies to be filled under the job ID listed. (num)|
+|Business Title   |The "business title", or "office title", for the job posting listed.   (Char)|
+|Title Classification   |The civil service title jurisdiction classification that corresponds to the civil service title posted.     (Factor)|
+|Level   |The civil service title assignment level that the posted position is being filled at. (Factor)|
+|Job Category   |The occupational group in which the posted job belongs (Char)|
+|Salary Range From   |The lowest salary on a job posting for a position within the salary band for the related civil service title. (num)|
+|Salary Range To   | The highest salary on a job posting for a position within the salary band for the related civil service title. (num)|
+|Salary Frequency   |The frequency of proposed salary.  Possible salary frequency values include “hourly”, “daily”, and “annual”.  (Factor)|
+|Hours/Shift  |Projected working hours, working days and shift information. (Char)|
+|Posting Date  |The date and time that a job vacancy was posted. (Date)|
+|Post Until  |The last date that a job vacancy will be posted; blank cells indicate job vacancy posts that will remain listed until the position is filled (Date)|
+
+
+
+### Columns information
+
+Looking at the columns, there are self-explanatory ones but there's also columns with vague name. Here we introduce some columns need explanations. The first important column is the job id column correspond to the number representing the job post in the agency's system. However, this id is not unique since one job posting could have two types, external and internal, recorded in column 'posting type'. Next is the Title Classification, This is a title jurisdiction classification, each job falls in one of the following five categories represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The job title also has a level assignment correspond to the work duties assigned to that position, this info is recorded in 'Level' column. With 0-1 level means interns and part-time workers, 2 meaning normal full-time worker, and 3-4 meaning lower to higher management worker. 
+
+There's two column with very similar name, Work Location and Work Location 1. This is not a duplication however, Work Location column records the location of agency posting the job, and Work Location 1 records the actual working place where employee goes every day. 
+
+The last three column are all with dates, while date format is in MM/DD/YY. There's one column here need special care: 'Post Until' column records the last data that, a job vacancy was be posted. There needs to be a vacancy inorder to be posted, thus a NA value here indicate the job is fully filled. Only when a job posting being withdrawn without filled will it leave record in this column.
+
+## Issues and Problems
+
+No known issues is given by the data provider, but when check data we found there's some complete duplicating rows.
+
+<!--chapter:end:02-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data transformation
+
+
+```{r}
+# https://dplyr.tidyverse.org/reference/mutate.html
+# https://stackoverflow.com/questions/15451251/extract-numeric-part-of-strings-of-mixed-numbers-and-characters-in-r
+library(stringr)
+regexp <- "[[:digit:]]+"
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+jobs$Title.Classification <- jobs$Title.Classification %>% str_extract(regexp)
+jobs$Title.Classification <- jobs$Title.Classification %>% factor()
+
+jobs <- jobs[!(jobs$Level == 'MY' | jobs$Level == 'M5' | jobs$Level == 'M6' | jobs$Level == 'M7'),]
+
+jobs$Level <- jobs$Level %>% str_extract(regexp)
+jobs$Level <- jobs$Level %>% factor()
+
+```
+
+## Cleaning
+
+The data in column Title.Classification and Level are categorical, thus need to be changed from initial readings which is characters. The classification is transformed in a following basis: Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5. The level have 0-4 integer leveling, however M1 ~ M4 exist representing minor 1 ~ minor 4. The record with these minor level is few in number thus converted to corresponding higher levels for analysis. There are also special cases which occur less than ten times, these cases are dropped.
+
+Next, since the salary of a job posting is being represented as an interval, we choose the mean value of the interval as the expected salary of each job posting for analysis. This becomes a new column Salary.Mean
+
+There's also two date column: 'Posted From' and 'Post Until' being imported as character, thus we need to convert them to date values. This enable us to calculate date difference and do further analysis.
+
+## Transformation
+
+As stated in data collection part, this dataset is relatively clean and not much needed to be done for transformation. The few things we done is adding columns of mean value and difference value for some numrical column for data presenting. Another added column is the converted meaningful NA value of the Post Until column. We also did covert the department name of each job posting to a shorter version to fit the size of the graph. Some mis-spelling in original data is corrected in this process.
+
+Newly generated columns are the following:
+
+|Column Name |Description|
+|:----:|:-------|
+|Salary Mean  |Mean value of salary band of the job post. (num)|
+|Filled  |If the job position is filled or not. (Boolean)|
+|Post Difference  |Posting date numbered in days untile withdrawn for unfilled job positions. (num) |
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Missing values
+
+## Graphing
+
+```{r fig.align="center", echo = FALSE,fig.height = 12, fig.width = 12}
+source("plot_missing.R")
+# read in data, change empty cell into NA
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+plot_missing(jobs,percent = TRUE, rotate = 90)
+```
+
+## Analysis
+
+### Columns with major missing (>50%)
+
+Following the graph, it is obvious that there are four columns with more than 50% of data missing. The first one, Recruitment Contact, is completely filled with NAs. This column is supposed to store the contact information of recruitment. It might be privacy consideration, or it might be the data collector found they can't collect this data after they created the data frame. Whichever it was, with full NA in the column, this one should be discarded for future analysis.
+
+Second most missing data is the Hour and Shift column. This column is supposed to store weekly working hours or shifts, but its not possible every job has this info when posting for hiring. Thus this is not a surprising discovery. 
+
+The third in the list is the column Post Until. This column is specially commented that a missing value here means the job is posted until fully filled. It is in fact a time stamp here, which means the job offer is being withdrawn without hiring enough people. This is showing around 63% of job positions are fully filled over the span.
+
+The fourth is Work location 1. This column, different from Work location which stores Agency location, stores specific work location of the employees. It is obvious that agency location is always fixed and thus is fully given in data, and the working location of employee is varying thus not frequently recorded. It might because that the job doesn't have a fixed place to work at, or the working place is TBA. Either way, it makes this column missing over 50% of the values.
+
+It is worth noting that although not over 50%, the fifth in the list also has a quite large portion of data missing compared to other columns. It is the column Additional Information, which stores the additional information about the corresponding job position. Maybe there isn't much info to post after all.
+
+### Frequent pattern of missing data
+
+The most frequent pattern consists of the four major missing columns, taking up over 13% of the total patterns. When adding the fifth most missing column, the second frequent pattern comes and take around 12% of the total patterns. These two are the most dominating patterns.
+
+The following patterns are a combination of the four major missing columns. An interesting pattern here is that only contains the Post Until frequently missing column (disregarding the fully missing column Recruitment Contact). With the fact that this missing value indicates whether the job is posted until fully filled, it shows that there's a lot of good data for analysis. For the patterns who are missing some of the four major missing information but do have the column Post Until, they are the great data samples to investigate how the missing of those info affects people applying for these jobs?
+
+Other patterns with the missing of elements outside the major four columns are minor in percentage and could possibly be ignored and removed for analysis.
+
+Overall, this data set is pretty good on completeness.
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Results
+
+```{r}
+library(lubridate)
+library(ggplot2)
+library(ggmosaic)
+library(dplyr)
+library(tidyr)
+library(RColorBrewer)
+library(vcd)
+library(RColorBrewer)
+library(stringr)
+library(gridExtra)
+library(tidyverse)
+```
+
+```{r}
+regexp <- "[[:digit:]]+"
+jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+jobs$Title.Classification <- jobs$Title.Classification %>% str_extract(regexp)
+jobs$Title.Classification <- jobs$Title.Classification %>% factor()
+
+jobs <- jobs[!(jobs$Level == 'MY' | jobs$Level == 'M5' | jobs$Level == 'M6' | jobs$Level == 'M7'),]
+
+jobs$Level <- jobs$Level %>% str_extract(regexp)
+jobs$Level <- jobs$Level %>% factor()
+
+```
+
+## Job openings 
+
+One of the most frequently asked questions about the employment is that what are the most in-demanding jobs. In this dataset, each record includes the details about the concrete business title, job Category and corresponding career level of this job. We aim to provide some insights about the trend of New York City official jobs.
+
+### The most in-demanding job categories.
+
+The occupational group in which the posted job belongs, such as: Administration & Human Resources,Communications & Intergovernmental Affairs,Constituent Services & Community Programs
+,Engineering, Architecture, & Planning,Finance, Accounting, & Procurement
+,Health, Technology, Data & Innovation, Legal Affairs,Building Operations & Maintenance,Policy, Research & Analysis,Public Safety, Inspections, & Enforcement,Social Services,Information Technology & Telecommunications.
+
+We divided each job into its corresponding category and examined the number of released job opportunities of each category.
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+Basic_job_cate <- Basic_job_Cate <- list ("Administration & Human Resources", "Building Operations & Maintenance", "Clerical & Administrative Support","Communications & Intergovernmental Affairs","Constituent Services & Community Programs","Engineering, Architecture, & Planning", "Finance, Accounting, & Procurement","Health","Information Technology & Telecommunications","Legal","Policy, Research & Analysis","Public Safety, Inspections, & Enforcement","Social Services","Technology, Data & Innovation")
+
+myfunc <- function(x, list) { for (i in list) {if (str_detect(x["Job.Category"],i)) {return(i)}}}
+new_job_cate <- apply(jobs[which(!is.na(jobs$Job.Category)),], 1, myfunc, list = Basic_job_Cate)
+new_job_cate <- new_job_cate %>% as.list() %>% as_tibble()
+new_job_cate <- as.data.frame(t(new_job_cate))
+colnames(new_job_cate) <- c("category")
+jobs$PostingYear <- as.Date(jobs$Posting.Date, format = "%m/%d/%Y")
+new_job_cate$year <- year(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
+new_job_cate$x_position <- jobs[which(!is.na(jobs$Job.Category)),]$X..Of.Positions
+demand_cate <- aggregate(new_job_cate$x_position, by = list(Category = new_job_cate$category),FUN = sum)
+```
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+ggplot(demand_cate, aes(x = reorder(Category,-x),y = x)) +
+  geom_bar(stat = "identity",fill = "#FAA028",color = "black") + 
+  scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
+  guides(x = guide_axis(angle = 0)) +
+  scale_y_continuous(expand = c(0,10)) +
+  theme_light() +
+  geom_text(aes(label=x), vjust=1.2, color="black", size=3.5) +
+  xlab("Category") +
+  ylab("Job Openings")
+```
+
+As we can seen from the graph above, Public Safety, Inspections, & Enforcement, Building Operations & Maintenance and Legal affair are the most hiring industries. Before diving into the data, I thought that the Tech industry would be the hottest industry for hiring. But the fact is that, there are nearly more than twice opportunities in Public Safety, Inspections, & Enforcement industry. Indeed, this may caused by the feature of this industry owning the high-mobility employees and the increasing demand for security during the pandemic period. We may explore further by examining the career level of these jobs and the detail business title of each job in the following chaper.
+
+### Which career leavel is mostly need in each Category
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+new_job_cate$Career_level <- jobs[which(!is.na(jobs$Career.Level)),]$Career.Level
+career_plot <- new_job_cate %>% group_by(category,Career_level) %>% summarise(val = sum(x_position)) %>% ungroup(Career_level)
+career_plot$Career_level <- fct_relevel(career_plot$Career_level,'Student','Entry-Level','Experienced (non-manager)','Manager','Executive')
+cate_level <- demand_cate[order(-demand_cate$x),]$Category
+career_plot$category <- fct_relevel(career_plot$category,cate_level)
+ggplot(career_plot, aes(x = category,y = val,fill = Career_level)) +
+    geom_bar(stat = "identity",color = "black",position='stack') + 
+    scale_x_discrete(label =  function(x) abbreviate(x, 5)) + 
+    guides(x = guide_axis(angle = 90)) +
+    scale_y_continuous(expand = c(0,10)) +
+    theme_light() +
+    scale_fill_manual(values = c("#AC92EB","#4FC1E8","#A0D568","#FFCE54","#ED5564")) + 
+    xlab("Category") +
+    ylab("Job Openings")
+```
+From this stacked bar chart, we may learn more about the feature of each industry. For the top two most hiring industries, we noticed that the less-experienced level(student and entry-level) accounts for nearly half or more job openings in the whole job market. If we think further, this feature may reveal that these jobs do not require much domain knowledge and are easy to be  substituted. So when you step into these industries, the most common scenario may be that you are assigned to handle with very basic issues because of the labor shortage. Another interesting industries are health, technology and social service. These industries nearly have no less-experienced level job openings, which suggests that high professional knowledge is required for relevant work. If you are interested in related work, you must be work hard.
+
+### The top 25 in-demanding business title
+When we trying to find a job, the most common question we might ask might be what's the most in-demanding job and what's the most reward job. In this section, we set our sight on the specific business title. By analyzing this, we try to provide some basic information about the New York City Office's job market.
+
+```{r,fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+title <- jobs %>% group_by(Business.Title) %>% summarise(freq = sum(X..Of.Positions))
+top_title <- title %>% top_n(freq,n = 25)
+p1 <- ggplot(top_title, aes(x = freq, y = fct_reorder(Business.Title, freq))) +
+  geom_point(size = 3, color = "SteelBlue") +
+  labs(x="Count",
+       y = "Title",
+       title="Most in-demanding Bussiness Title") +
+  theme_linedraw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+    theme(plot.title = element_text(hjust = 0.5,size = 8),
+        axis.text=element_text(size=6),
+        axis.title=element_text(size=8,face="bold"))
+
+top_salary <- jobs[which(jobs$Salary.Frequency == "Annual"),][,c("Business.Title","Salary.Range.From","Salary.Range.To")]
+top_salary <- top_salary %>% mutate(Salary_Mean = ceiling((Salary.Range.From + Salary.Range.To)/2))
+salary_plot <- top_salary %>% group_by(Business.Title) %>% summarise(ave = mean(Salary_Mean)) %>% top_n(ave,n=25)
+p2<- ggplot(salary_plot, aes(x = ave, y = fct_reorder(Business.Title, ave))) +
+  geom_point(size = 2, color = "SteelBlue") +
+  labs(x="Salary ($/Annual)",
+       y = "Title",
+       title="Most rewarded Bussiness Title") +
+  theme_linedraw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5,size = 8),
+        axis.text=element_text(size=6),
+        axis.title=element_text(size=8,face="bold"))
+grid.arrange(p1, p2, nrow = 2)
+```
+Reasonable in sense that the police and city public property managers are the most in-demanding jobs. These areas draws on a large quantity of human labors and requires more in the pandemic period,which make the Public Safety, Inspections, & Enforcement industry the most in-demanding industry. And we can see from the most rewarded business title plot that the gap between these jobs are not that huge. One reasonable explanation is that these jobs are kind of civil servants, so profit is not the first purpose of these related agency.
+
+### What are the month trends of job openings
+
+Another interesting question is that what's the best time to find a job during a year. We analysis the posting date of each job and group them by the Job Category.
+```{r}
+new_job_cate$month <- month(jobs[which(!is.na(jobs$Job.Category)),]$PostingYear)
+mycolors <- c("#2c7fB8",brewer.pal(12, "Set3"),"#121a20")
+month_plot <- new_job_cate %>% group_by(category,month) %>% summarise(val = sum(x_position)) %>% ungroup(month)
+ggplot(month_plot,aes(x = as.factor(month),y = val,color = category,group = category)) +
+  geom_point() + 
+  geom_line() +
+  theme_light() +
+  theme(legend.title = element_text(size = 8),legend.text = element_text(size = 4)) +
+  scale_color_manual(values = mycolors) +
+  xlab('month') + 
+  ylab('Number of positions')
+
+```
+The above plot depicted the job opening patterns for different industries. The job openings is not uniformly distributed around the year. So When you find it's hard to find a job, it might because that you pick a wrong time in a year. Although they do not hold a universal pattern, they share some trend in common. Generally speaking, October is the most thriving job seeking month for most industry. There are some exceptional industries. For Public Safety, Inspections, & Enforcement industry, there is a sudden spikes in June and July. One possible explanation is that some job openings are internal for the graduates of Police academy and these two months are the usual graduating months. Another exceptional industries groups are Building Operations & Maintenance,
+Health and Legal affair. These industries share a sudden increasing of the job opening line in the early month of a year. The deep reasons may need extra data to explore. 
+
+## Job features
+
+In the dataset, each job post is categorized by two factor, Title Classification and Level. While classification represented by a number : Competitive - 1, Pending Classification - 2, Labor - 3, Exempt - 4 and Non-Competitive - 5 and higher leveling higher position in the agency structure.
+
+```{r fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+# jobs <- read.csv("resources/NYC_Jobs.csv",na.strings=c("","NA"))
+# https://cran.r-project.org/web/packages/ggmosaic/vignettes/ggmosaic.html
+# mosaic(Title.Classification~Level, data=jobs, direction=c('v', 'h'))
+ggplot(data=jobs) + 
+  geom_mosaic(aes(x=product(Title.Classification, Level), fill = Title.Classification), alpha = 0.6) +
+  labs(y="Title.Classification", x="Level", title ="Jobs Level verses Classification" )
+```
+
+Viewing data on level difference, we can see that among all level of jobs, labor and exempt title is quite small in amount. This could be related to the fact this data is collected by government agency focusing on goverment hiring, which indeed need less pure-labor worker than office workers.
+
+### Lower level job titles
+
+On level 0 which represent part-time jobs, the competitive jobs and non-competitive jobs are almost even, this could be the fact that part-time worker is needed among all positions, creating a balanced distribution. On level 1 representing interns, the competitive jobs remains the same portion while unclassified jobs increase dramatically. This could be the nature of interns which newcomers are not fulling integrated in the agency's system, thus creating lots of unclassified jobs. 
+
+### higher level job titles
+
+On level 2-4 the competitive portion is significantly higher than lower level jobs. This indicate a competition intensive job environment in government agency, no matter mid to low lever full-time workers or higher level managment workser, they all have high competitive job percentage. Level 4 however do have a slightly lower competitve level compared to level 2 and 3, marking the highest managing works are less competitive. This could because of that level 4 jobs are rare and not much people are qualified and applied to those jobs.
+
+
+```{r fig.align="center", echo = FALSE,fig.height = 6, fig.width = 8}
+#mosaic(Level~Title.Classification, data=jobs, direction=c('v', 'h'))
+ggplot(data=jobs) + 
+  geom_mosaic(aes(x=product(Level, Title.Classification), fill = Level), alpha = 0.6) +
+  labs(x="Title.Classification", y="Level", title ="Jobs Classification verses Level" )
+```
+
+Viewing from another perspective, we can see competitive positions - 5 are packed in level 0 jobs while non-competitive positions are evenly distributed among different levels except level 4. Unclassified titles are mostly in level 1 which is interns. This is mostly consistent with previous findings.
+
+One other important factor people concerning when looking for jobs is the income. Different salary might affect people's willing to apply for the job. Here we look into the salary column of the dataset.
+
+### Distribution of salary
+
+There's three different kind of salary frequency: Annual, Daily and Hourly. Since Daily salary is few in number (24 entries), it is omitted in this analysis.
+
+#### Annual salary
+
+```{r}
+#http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
+annual <- jobs[(jobs$Salary.Frequency == "Annual"),]
+annual <- annual %>% mutate(Salary.Mean = ceiling((Salary.Range.From + Salary.Range.To)/2))
+annual[!is.na(annual$Salary.Mean),] %>% 
+  ggplot(aes(x=Salary.Mean)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 5000,
+                 colour="black", fill="white") +
+  geom_vline(aes(xintercept=mean(Salary.Mean, na.rm=T)),
+               color="red", linetype="dashed", size=1) +
+  geom_vline(aes(xintercept=64450),
+               color="blue", linetype="dashed", size=1)
+```
+
+This is a histogram of the expected salary each job position is willing to pay annually. The red line indicates the mean value of all values, and the blue line indicates the 50% AMI(Area Median Income) of a 5-person family in NYC. (Source: https://www1.nyc.gov/site/hpd/services-and-information/area-median-income.page) According to the agency giving this data, the value left of the blue line indicate "Very-Low-Income".
+
+We can see in this graph that the expected salary is left-skewed distributed. This is normal since in an agency, there's always more low-level worker than high-level workers. The mean value of all salary is higher than the "Low income line", but not much. Most of the job positions still have around the 64450 dollars of annual income for a five people family, which is the blue line.
+
+Overall, the annual salary is quite balanced but realtivly low compared to the area income level.
+
+#### Hourly salary
+
+```{r}
+#http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
+hourly <- jobs[(jobs$Salary.Frequency == "Hourly"),]
+hourly <- hourly %>% mutate(Salary.Mean = round((Salary.Range.From + Salary.Range.To)/2),digits=2)
+hourly[!is.na(hourly$Salary.Mean),] %>% 
+  ggplot(aes(x=Salary.Mean)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 1,
+                 colour="black", fill="white") +
+  geom_vline(aes(xintercept=mean(Salary.Mean, na.rm=T)),
+               color="red", linetype="dashed", size=1) +
+  geom_vline(aes(xintercept=20),
+               color="blue", linetype="dashed", size=1)
+```
+
+This is the histogram of expected salary of hourly paid job positions. The red line is the mean, and the blue line is the 50% AMI in NYC (source: https://www.ziprecruiter.com/Salaries/Hourly-Salary--in-New-York). We can see that dispite being spreaded widely, a huge amount of hourly paid job receive a very low hourly salary of 18 dollars. There's also some highly paid jobs increasing the mean, but compared to the large quantity they look more like outliers. 
+
+## Job filling and posting time
+
+There's two column in the dataset recording posting date and withdrawn date of each job posting. A job posting will only withdraw when it can't find enough people to fill the positions. These two date records a time span of each job posting.
+
+### Salary over job filling and level
+
+```{r}
+# https://www.statmethods.net/input/dates.html
+annual$Posting.Date <- as.Date(annual$Posting.Date, "%m/%d/%Y")
+annual$Post.Until <- as.Date(annual$Post.Until, "%d-%b-%y")
+annual$Filled <- is.na(annual$Post.Until)
+
+annual[!is.na(annual$Salary.Mean),] %>%
+  ggplot(aes(x=Salary.Mean)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 5000,
+                 colour="black", fill="white")+
+  facet_grid(Level ~ Filled)
+
+
+```
+
+This is mean annual salary in groups of job level and the status of filling or not. We can see that the distribution of filled (TRUE column) job postions is generally higher than the unfilled ones, showing that salary do affect people's willingness of applying for a job. It also show there's generally more filled jobs than unfilled, and the salary increases as level increases.
+
+### Unfilled jobs' waiting date
+
+```{r}
+annual <- annual %>% mutate(Post.Difference = Post.Until - Posting.Date)
+
+annual[!is.na(annual$Post.Difference),] %>%
+  ggplot(aes(x=Post.Difference)) + 
+  geom_histogram(aes(y=..count..),
+                 binwidth = 20,
+                 colour="black", fill="white")+
+  facet_grid(Level ~ .)
+
+```
+
+This is the number of waiting date until a job position is withdrawn without being filled. There isn't much difference among different level of jobs, all jobs have a span of 10-30 days waiting time. The second large waiting span is 70-90 days waiting and the third is 50-70 days of waiting. This indicate an agency normally wait either one month or three month for a job postion to be filled before they withdraw.
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+<iframe src="code/demo.html" width="610" height="800"> </iframe>
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+## Limitations
+
+
+
+## Future directions
+
+Among different job level and title classification, we discovered their different distributions. This can be further discussed in a facet of different department. Beyond this, we can add further analysis with different career level required. This can be combined with salary part to give further insights.
+
+From out analysis, we can see that salary plays a decent role affecting filling of job positions while waiting time is mostly the same for different jobs. This indicates an underlying relationship between salary and filling percentage. What is the factor of people's application to jobs? Besides salary, job description and work location are also possible factors. However these are character columns and will need NLP to do further analysis.
+
+## Lesson learnt
+
+<!--chapter:end:07-conclusion.Rmd-->
+
