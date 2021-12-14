@@ -1,14 +1,15 @@
 # Conclusion
 
+This report explores the job posting on the City of New York’s official jobs site. By visualizing the job openings distributions, we discover that the labor shortage of the most in-demanding industries: Public Safety, Inspections, & Enforcement, Building Operations & Maintenance are caused by the less-experienced shortage. And for technology-intensive industries: health, technology and social service, the most urgent need of employer are the experienced employees. Looking at the job openings monthly graph, we conclude the October is generally the most thriving job market in a year. When it comes to the salary issue, we notice there is not a huge gap between all industries and the salary is relatively low compared to the area income level. We explain it as all these job are kind of a civil servant 
+job. So for these agencies, profit is not the most concerning problem. Finally, through analyzing the job hiring process, we get the conclusion that salary do affect people's willingness of applying for a job and the an agency normally wait either one month or three month for a job position to be filled before they withdraw. 
+
 ## Limitations
 
-Our data is limited to year 2021 and previous year's data is lacking. This might impact the coverage of data and the result drawn could be biased.
-
+1. Our data is limited to year 2021 and previous year's data is lacking. This might impact the coverage of data and the result drawn could be biased.
+2. The most columns info contained in this dataset is descriptive information. This feature of this dataset limits us to conduct more quantitative research. Because the biaed data distribution on the time dimension also limits us to do analysis the trend of job market as a time series model.
 
 ## Future directions
 
 Among different job level and title classification, we discovered their different distributions. This can be further discussed in a facet of different department. Beyond this, we can add further analysis with different career level required. This can be combined with salary part to give further insights.
 
-From out analysis, we can see that salary plays a decent role affecting filling of job positions while waiting time is mostly the same for different jobs. This indicates an underlying relationship between salary and filling percentage. What is the factor of people's application to jobs? Besides salary, job description and work location are also possible factors. However these are character columns and will need NLP to do further analysis.
-
-## Lesson learnt
+From our analysis, we can see that salary plays a decent role affecting filling of job positions while waiting time is mostly the same for different jobs. This indicates an underlying relationship between salary and filling percentage. What is the factor of people's application to jobs? Besides salary, job description and work location are also possible factors. However these are character columns and will need NLP to do further analysis.
