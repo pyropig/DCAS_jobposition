@@ -2,6 +2,7 @@
 
 ## Limitations
 
+Our data is limited to year 2021 and previous year's data is lacking. This might impact the coverage of data and the result drawn could be biased.
 
 
 ## Future directions

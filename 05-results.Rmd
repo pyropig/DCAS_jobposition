@@ -202,7 +202,7 @@ This is a histogram of the expected salary each job position is willing to pay a
 
 We can see in this graph that the expected salary is left-skewed distributed. This is normal since in an agency, there's always more low-level worker than high-level workers. The mean value of all salary is higher than the "Low income line", but not much. Most of the job positions still have around the 64450 dollars of annual income for a five people family, which is the blue line.
 
-Overall, the annual salary is quite balanced but realtivly low compared to the area income level.
+Overall, the annual salary is quite balanced but relatively low compared to the area income level.
 
 #### Hourly salary
 
@@ -245,7 +245,7 @@ annual[!is.na(annual$Salary.Mean),] %>%
 
 ```
 
-This is mean annual salary in groups of job level and the status of filling or not. We can see that the distribution of filled (TRUE column) job postions is generally higher than the unfilled ones, showing that salary do affect people's willingness of applying for a job. It also show there's generally more filled jobs than unfilled, and the salary increases as level increases.
+This is mean annual salary in groups of job level and the status of filling or not. We can see that the distribution of filled (TRUE column) job positions is generally higher than the unfilled ones, showing that salary do affect people's willingness of applying for a job. It also show there's generally more filled jobs than unfilled, and the salary increases as level increases.
 
 ### Unfilled jobs' waiting date
 
@@ -261,4 +261,4 @@ annual[!is.na(annual$Post.Difference),] %>%
 
 ```
 
-This is the number of waiting date until a job position is withdrawn without being filled. There isn't much difference among different level of jobs, all jobs have a span of 10-30 days waiting time. The second large waiting span is 70-90 days waiting and the third is 50-70 days of waiting. This indicate an agency normally wait either one month or three month for a job postion to be filled before they withdraw.
+This is the number of waiting date until a job position is withdrawn without being filled. There isn't much difference among different level of jobs, all jobs have a span of 10-30 days waiting time. The second large waiting span is 70-90 days waiting and the third is 50-70 days of waiting. This indicate an agency normally wait either one month or three month for a job position to be filled before they withdraw.
